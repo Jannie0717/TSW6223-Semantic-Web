@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RDF/RDFS Course and Career Recommendation System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Semantic Course and Career Recommendation System</h1>
+        <p>Category 2 only: RDF, RDFS and SPARQL for education course and career planning.</p>
+    </header>
+
+    <main>
+        <section class="card">
+            <h2>Student Profile</h2>
+            <form method="POST">
+                <label for="interest">Select Interest Area</label>
+                <select name="interest" id="interest" required>
+                    <option value="">-- Choose interest --</option>
+                    {% for interest in interests %}
+                        <option value="{{ interest.uri }}" {% if selected.interest == interest.uri %}selected{% endif %}>
+                            {{ interest.label }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <label for="career">Target Career Path</label>
+                <select name="career" id="career">
+                    <option value="">-- Auto suggest based on interest --</option>
+                    {% for career in careers %}
+                        <option value="{{ career.uri }}" {% if selected.career == career.uri %}selected{% endif %}>
+                            {{ career.label }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <label>Current Skills</label>
+                <div class="checkbox-grid">
+                    {% for skill in skills %}
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="skills" value="{{ skill.uri }}" {% if skill.uri in selected.skills %}checked{% endif %}>
+                            {{ skill.label }}
+                        </label>
+                    {% endfor %}
+                </div>
+
+                <button type="submit">Generate Recommendation</button>
+            </form>
+        </section>
+
+        {% if result %}
+        <section class="card result">
+            <h2>Recommendation Result</h2>
+
+            {% if result.target_career %}
+            <div class="summary-box">
+                <h3>Target Career: {{ result.target_career }}</h3>
+                <p>{{ result.target_description }}</p>
+                <p><strong>Career Readiness:</strong> {{ result.progress }}%</p>
+            </div>
+
+            <div class="two-column">
+                <div>
+                    <h3>Matched Skills</h3>
+                    {% if result.matched_skills %}
+                        <ul>
+                            {% for skill in result.matched_skills %}
+                                <li>{{ skill }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No matched skills yet.</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <h3>Missing Skills</h3>
+                    {% if result.missing_skills %}
+                        <ul>
+                            {% for skill in result.missing_skills %}
+                                <li>{{ skill }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No missing skills. You are ready for this career path.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <h3>Recommended Courses</h3>
+            {% if result.recommended_courses %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Course</th>
+                            <th>Skill Covered</th>
+                            <th>Difficulty</th>
+                            <th>Credit</th>
+                            <th>Prerequisite</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for course in result.recommended_courses %}
+                        <tr>
+                            <td>
+                                <strong>{{ course.course }}</strong><br>
+                                <span>{{ course.description }}</span>
+                            </td>
+                            <td>{{ course.skill }}</td>
+                            <td>{{ course.difficulty }}</td>
+                            <td>{{ course.credit }}</td>
+                            <td>{{ course.prerequisites | join(', ') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No course recommendation is needed because there are no missing skills for the selected career.</p>
+            {% endif %}
+            {% else %}
+                <p>No target career was found. Please select an interest area or choose a target career.</p>
+            {% endif %}
+
+            <h3>Possible Careers Based on Interest</h3>
+            {% if result.possible_careers %}
+                <ul>
+                    {% for career in result.possible_careers %}
+                        <li><strong>{{ career.career }}</strong> — {{ career.description }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No possible career found for the selected interest.</p>
+            {% endif %}
+
+            <div class="tech-box">
+                <p><strong>Semantic Web Technology Used:</strong> {{ result.technology_note }}</p>
+                <details>
+                    <summary>Show sample SPARQL queries used by the system</summary>
+                    <h4>Career matching query</h4>
+                    <pre>{{ result.sparql_examples.career_query }}</pre>
+                    <h4>Course recommendation query</h4>
+                    <pre>{{ result.sparql_examples.course_query }}</pre>
+                </details>
+            </div>
+        </section>
+        {% endif %}
+    </main>
+</body>
+</html>

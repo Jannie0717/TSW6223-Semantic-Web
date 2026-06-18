@@ -1,0 +1,78 @@
+Evaluation Test Cases - Category 2 Version
+==========================================
+
+Test Case 1: AI career recommendation
+-------------------------------------
+Input:
+- Interest Area: Artificial Intelligence
+- Target Career: AI Engineer
+- Current Skills: Python Programming
+
+Expected Result:
+- Target Career should display AI Engineer.
+- Matched skill should include Python Programming.
+- Missing skills should include Algorithms, Deep Learning and Machine Learning.
+- Recommended courses should include Algorithm Design, Deep Learning and Machine Learning.
+
+Actual Result:
+To be filled during system testing.
+
+Status:
+Pass / Fail
+
+
+Test Case 2: Data Science course recommendation
+-----------------------------------------------
+Input:
+- Interest Area: Data Science
+- Target Career: Data Scientist
+- Current Skills: Python Programming, Statistics
+
+Expected Result:
+- Matched skills should include Python Programming and Statistics.
+- Missing skills should include Database Management, Data Visualization and Machine Learning.
+- Recommended courses should include Database Systems, Data Visualization and Machine Learning.
+
+Actual Result:
+To be filled during system testing.
+
+Status:
+Pass / Fail
+
+
+Test Case 3: Cybersecurity skill gap analysis
+--------------------------------------------
+Input:
+- Interest Area: Cybersecurity
+- Target Career: Cybersecurity Analyst
+- Current Skills: Computer Networking
+
+Expected Result:
+- Matched skill should include Computer Networking.
+- Missing skills should include Python Programming, Security Fundamentals and Critical Thinking.
+- Recommended courses should include Introduction to Python Programming, Cybersecurity Basics and Critical Thinking and Problem Solving.
+
+Actual Result:
+To be filled during system testing.
+
+Status:
+Pass / Fail
+
+
+Test Case 4: No missing skill condition
+--------------------------------------
+Input:
+- Interest Area: Web Development
+- Target Career: Web Developer
+- Current Skills: HTML and CSS, JavaScript, Backend Programming, Database Management
+
+Expected Result:
+- Career readiness should be 100%.
+- No missing skills should be shown.
+- No course recommendation should be needed.
+
+Actual Result:
+To be filled during system testing.
+
+Status:
+Pass / Fail

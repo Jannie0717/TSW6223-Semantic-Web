@@ -1,0 +1,27 @@
+4.0 Evaluation
+==============
+
+4.1 Evaluation Method
+---------------------
+Functionality testing was conducted to evaluate whether the Semantic Course and Career Recommendation System works according to the project objectives. The testing focused on checking whether the system can correctly retrieve careers, identify matched and missing skills, calculate career readiness and recommend suitable courses using RDF/RDFS data and SPARQL queries.
+
+4.2 Test Case Summary
+---------------------
+Several test cases were prepared using different interest areas, target careers and current skill selections. For each test case, the expected output was compared with the actual output displayed by the system.
+
+4.3 Evaluation Criteria
+-----------------------
+The system is considered successful if:
+1. The selected interest area returns relevant possible careers.
+2. The selected target career displays correct matched skills.
+3. The system correctly identifies missing skills.
+4. The recommended courses match the missing skills.
+5. The results are retrieved from the RDF/RDFS graph using SPARQL queries.
+
+4.4 Example Evaluation Result
+-----------------------------
+For example, when the user selects Artificial Intelligence as the interest area, AI Engineer as the target career and Python Programming as the current skill, the system should show Python Programming as a matched skill. It should also identify Algorithms, Deep Learning and Machine Learning as missing skills. Therefore, the system should recommend Algorithm Design, Deep Learning and Machine Learning courses.
+
+4.5 Evaluation Conclusion
+-------------------------
+Based on the functionality tests, the system is able to achieve its main purpose of supporting students in course selection and career path planning. The system successfully uses Category 2 Semantic Web technologies, which are RDF, RDFS and SPARQL, to structure education data and retrieve meaningful recommendation results.

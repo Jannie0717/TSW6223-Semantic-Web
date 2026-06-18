@@ -1,0 +1,60 @@
+3.0 Solution Development
+========================
+
+3.1 System Overview
+-------------------
+The proposed solution is a Semantic Web-Based Course and Career Recommendation System for the education domain. The system connects two related subdomains: course recommendation and career path skill gap analysis. The purpose of the system is to help students understand the relationship between their current skills, suitable career paths, missing skills and recommended courses.
+
+3.2 Selected Semantic Web Technology
+------------------------------------
+This solution uses Category 2 Semantic Web technologies only, which are RDF, RDFS and SPARQL. RDF is used to represent the education data as triples. For example, a career requires a skill, a course teaches a skill, and a student has a skill. RDFS is used to define the schema of the data, including classes such as Student, Course, Skill, Career and Interest. RDFS properties such as rdfs:domain, rdfs:range and rdfs:label are used to describe the meaning and structure of the data. SPARQL is used to query the RDF graph and retrieve the recommendation results.
+
+3.3 RDF/RDFS Data Design
+------------------------
+The system contains five main RDFS classes:
+1. Student
+2. Course
+3. Skill
+4. Career
+5. Interest
+
+The main RDF properties are:
+1. ex:hasSkill - links a student to a skill.
+2. ex:interestedIn - links a student to an interest area.
+3. ex:requiresSkill - links a career to required skills.
+4. ex:teachesSkill - links a course to the skill it teaches.
+5. ex:relatedToInterest - links a career to an interest area.
+6. ex:hasPrerequisiteSkill - links a course to prerequisite skills.
+
+3.4 System Architecture
+-----------------------
+The application follows this flow:
+
+User Input -> Flask Web Interface -> Python Backend -> RDF/RDFS Turtle File -> SPARQL Queries -> Recommendation Output
+
+The user selects an interest area, current skills and optionally a target career. The Python backend loads the RDF/RDFS Turtle file using RDFLib. The system adds the current student profile as temporary RDF triples. Then, SPARQL queries are executed to retrieve possible careers, identify matched and missing skills, and recommend courses that teach the missing skills.
+
+3.5 Implementation Details
+--------------------------
+The system is implemented using Python Flask and RDFLib. Flask is used to build the web interface and handle user input. RDFLib is used to load, manage and query the RDF graph. The RDF/RDFS data is stored in Turtle format in the file data/education_rdf_rdfs.ttl. The main program file is app.py.
+
+The application does not use OWL or inference in this Category 2 version. All results are produced using direct RDF/RDFS relationships and SPARQL query logic. For example, a course is recommended when the target career requires a skill, the student does not have that skill, and a course teaches that skill.
+
+3.6 Main System Features
+------------------------
+The main features of the system are:
+1. Display interest areas, careers and skills from RDF data.
+2. Match selected interest area with related career paths.
+3. Compare current student skills with career-required skills.
+4. Calculate career readiness percentage.
+5. Recommend courses for missing skills using SPARQL.
+6. Display sample SPARQL queries used by the system.
+
+3.7 Example SPARQL Logic
+------------------------
+The course recommendation is based on the following logic:
+1. The selected career requires a skill.
+2. The student does not already have the skill.
+3. A course teaches that missing skill.
+
+This is implemented using a SPARQL query with the MINUS clause to exclude skills that the student already has.

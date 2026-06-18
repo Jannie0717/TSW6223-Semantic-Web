@@ -1,0 +1,60 @@
+SPARQL Examples - Category 2 RDF/RDFS/SPARQL Only
+=================================================
+
+1. Query all skills
+-------------------
+PREFIX ex: <http://example.org/education#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?skill ?skillLabel WHERE {
+    ?skill a ex:Skill ;
+           rdfs:label ?skillLabel .
+}
+ORDER BY ?skillLabel
+
+
+2. Query possible careers based on selected interest
+----------------------------------------------------
+PREFIX ex: <http://example.org/education#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?career ?careerLabel ?desc WHERE {
+    ?student ex:interestedIn ?interest .
+    ?career a ex:Career ;
+            ex:relatedToInterest ?interest ;
+            rdfs:label ?careerLabel ;
+            ex:description ?desc .
+}
+ORDER BY ?careerLabel
+
+
+3. Query missing skills for selected career
+-------------------------------------------
+PREFIX ex: <http://example.org/education#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?skill ?skillLabel WHERE {
+    ?career ex:requiresSkill ?skill .
+    ?skill rdfs:label ?skillLabel .
+    MINUS { ?student ex:hasSkill ?skill . }
+}
+ORDER BY ?skillLabel
+
+
+4. Query recommended courses for missing skills
+-----------------------------------------------
+PREFIX ex: <http://example.org/education#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?course ?courseLabel ?skillLabel ?difficulty ?credit ?desc WHERE {
+    ?career ex:requiresSkill ?skill .
+    ?course a ex:Course ;
+            ex:teachesSkill ?skill ;
+            rdfs:label ?courseLabel ;
+            ex:difficulty ?difficulty ;
+            ex:creditHour ?credit ;
+            ex:description ?desc .
+    ?skill rdfs:label ?skillLabel .
+    MINUS { ?student ex:hasSkill ?skill . }
+}
+ORDER BY ?difficulty ?courseLabel
