@@ -3,58 +3,64 @@
 
 3.1 System Overview
 -------------------
-The proposed solution is a Semantic Web-Based Course and Career Recommendation System for the education domain. The system connects two related subdomains: course recommendation and career path skill gap analysis. The purpose of the system is to help students understand the relationship between their current skills, suitable career paths, missing skills and recommended courses.
+Solution 1 is a Semantic Web-Based Course Recommendation System for the education domain. The system helps students identify suitable courses based only on their selected interest area. The Current Skills selection and Career Path / Skill Gap Analysis features are not included in this version because Solution 1 focuses only on course recommendation.
+
+The system follows this flow:
+Student Interest -> RDF/RDFS Knowledge Base -> SPARQL Query -> Recommended Courses
 
 3.2 Selected Semantic Web Technology
 ------------------------------------
-This solution uses Category 2 Semantic Web technologies only, which are RDF, RDFS and SPARQL. RDF is used to represent the education data as triples. For example, a career requires a skill, a course teaches a skill, and a student has a skill. RDFS is used to define the schema of the data, including classes such as Student, Course, Skill, Career and Interest. RDFS properties such as rdfs:domain, rdfs:range and rdfs:label are used to describe the meaning and structure of the data. SPARQL is used to query the RDF graph and retrieve the recommendation results.
+The selected topic for Solution 1 is Category 2: RDF, RDFS and SPARQL.
+
+RDF is used to represent education data as triples. For example, a course can be linked to the skill it teaches and the interest area it belongs to. RDFS is used to define the structure of the data, including classes such as Student, Course, Skill and Interest. It also defines properties such as interestedIn, teachesSkill, relatedToInterest and hasPrerequisiteSkill. SPARQL is used to query the RDF graph and retrieve recommended courses based on the selected interest area.
 
 3.3 RDF/RDFS Data Design
 ------------------------
-The system contains five main RDFS classes:
-1. Student
-2. Course
-3. Skill
-4. Career
-5. Interest
+The RDF/RDFS data file is stored in:
 
-The main RDF properties are:
-1. ex:hasSkill - links a student to a skill.
-2. ex:interestedIn - links a student to an interest area.
-3. ex:requiresSkill - links a career to required skills.
-4. ex:teachesSkill - links a course to the skill it teaches.
-5. ex:relatedToInterest - links a career to an interest area.
-6. ex:hasPrerequisiteSkill - links a course to prerequisite skills.
+data/education_rdf_rdfs.ttl
 
-3.4 System Architecture
------------------------
-The application follows this flow:
+Main RDFS classes:
+- Student
+- Course
+- Skill
+- Interest
 
-User Input -> Flask Web Interface -> Python Backend -> RDF/RDFS Turtle File -> SPARQL Queries -> Recommendation Output
+Main RDF properties:
+- interestedIn: links Student to Interest
+- teachesSkill: links Course to Skill
+- relatedToInterest: links Course to Interest
+- hasPrerequisiteSkill: links Course to prerequisite Skill
+- difficulty: stores course difficulty
+- creditHour: stores course credit hour
 
-The user selects an interest area, current skills and optionally a target career. The Python backend loads the RDF/RDFS Turtle file using RDFLib. The system adds the current student profile as temporary RDF triples. Then, SPARQL queries are executed to retrieve possible careers, identify matched and missing skills, and recommend courses that teach the missing skills.
+3.4 Application Implementation
+------------------------------
+The application is implemented using Python Flask. RDFLib is used to load the Turtle file and execute SPARQL queries. The website interface is created using HTML and CSS.
 
-3.5 Implementation Details
---------------------------
-The system is implemented using Python Flask and RDFLib. Flask is used to build the web interface and handle user input. RDFLib is used to load, manage and query the RDF graph. The RDF/RDFS data is stored in Turtle format in the file data/education_rdf_rdfs.ttl. The main program file is app.py.
+Main files:
+- app.py: Main Flask application and SPARQL logic
+- data/education_rdf_rdfs.ttl: RDF/RDFS knowledge base
+- templates/index.html: User interface
+- static/style.css: Website styling
+- run_tests.py: Functionality testing script
 
-The application does not use OWL or inference in this Category 2 version. All results are produced using direct RDF/RDFS relationships and SPARQL query logic. For example, a course is recommended when the target career requires a skill, the student does not have that skill, and a course teaches that skill.
+3.5 Course Recommendation Process
+---------------------------------
+The user only selects an interest area. The system creates a temporary RDF triple for the current student and links the student to the selected interest. Then, a SPARQL query searches for courses that are related to the selected interest area.
 
-3.6 Main System Features
-------------------------
-The main features of the system are:
-1. Display interest areas, careers and skills from RDF data.
-2. Match selected interest area with related career paths.
-3. Compare current student skills with career-required skills.
-4. Calculate career readiness percentage.
-5. Recommend courses for missing skills using SPARQL.
-6. Display sample SPARQL queries used by the system.
+Example logic:
+1. Student selects Artificial Intelligence.
+2. The system stores the selected interest as an RDF triple.
+3. The system searches for AI-related courses using SPARQL.
+4. The system recommends courses such as Introduction to Python Programming, Machine Learning, Deep Learning, Algorithm Design and Statistics for Data Analytics.
 
-3.7 Example SPARQL Logic
-------------------------
-The course recommendation is based on the following logic:
-1. The selected career requires a skill.
-2. The student does not already have the skill.
-3. A course teaches that missing skill.
-
-This is implemented using a SPARQL query with the MINUS clause to exclude skills that the student already has.
+3.6 Key Features
+----------------
+- Interest area selection only
+- RDF/RDFS model preview
+- SPARQL-based course recommendation
+- Course difficulty and credit hour display
+- Skills taught by each course
+- Prerequisite skill display
+- SPARQL query example for demonstration

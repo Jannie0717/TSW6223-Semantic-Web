@@ -1,7 +1,7 @@
-# TSW6223-Semantic-Web Solution 1
-
+# TSW6223-Semantic-Web
+====================================================================
 Semantic Course and Career Recommendation System - Category 2 Version
-
+====================================================================
 
 Project Domain:
 Education

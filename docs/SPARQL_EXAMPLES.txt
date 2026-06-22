@@ -1,60 +1,31 @@
-SPARQL Examples - Category 2 RDF/RDFS/SPARQL Only
-=================================================
+SPARQL Examples - Solution 1
+===========================
 
-1. Query all skills
--------------------
+1. Course Recommendation Query
+------------------------------
+This query recommends courses related to the selected interest area.
+
 PREFIX ex: <http://example.org/education#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?skill ?skillLabel WHERE {
-    ?skill a ex:Skill ;
-           rdfs:label ?skillLabel .
+SELECT DISTINCT ?course ?courseLabel ?skillLabel WHERE {
+  ?student ex:interestedIn ?interest .
+  ?course a ex:Course ;
+          ex:relatedToInterest ?interest ;
+          ex:teachesSkill ?skill ;
+          rdfs:label ?courseLabel .
+  ?skill rdfs:label ?skillLabel .
 }
-ORDER BY ?skillLabel
+ORDER BY ?courseLabel ?skillLabel
 
+2. RDFS Class Preview Query
+---------------------------
+This query retrieves the RDFS classes used in the system.
 
-2. Query possible careers based on selected interest
-----------------------------------------------------
-PREFIX ex: <http://example.org/education#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT DISTINCT ?career ?careerLabel ?desc WHERE {
-    ?student ex:interestedIn ?interest .
-    ?career a ex:Career ;
-            ex:relatedToInterest ?interest ;
-            rdfs:label ?careerLabel ;
-            ex:description ?desc .
+SELECT ?class ?classLabel ?comment WHERE {
+  ?class a rdfs:Class .
+  OPTIONAL { ?class rdfs:label ?classLabel . }
+  OPTIONAL { ?class rdfs:comment ?comment . }
 }
-ORDER BY ?careerLabel
-
-
-3. Query missing skills for selected career
--------------------------------------------
-PREFIX ex: <http://example.org/education#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
-SELECT DISTINCT ?skill ?skillLabel WHERE {
-    ?career ex:requiresSkill ?skill .
-    ?skill rdfs:label ?skillLabel .
-    MINUS { ?student ex:hasSkill ?skill . }
-}
-ORDER BY ?skillLabel
-
-
-4. Query recommended courses for missing skills
------------------------------------------------
-PREFIX ex: <http://example.org/education#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
-SELECT DISTINCT ?course ?courseLabel ?skillLabel ?difficulty ?credit ?desc WHERE {
-    ?career ex:requiresSkill ?skill .
-    ?course a ex:Course ;
-            ex:teachesSkill ?skill ;
-            rdfs:label ?courseLabel ;
-            ex:difficulty ?difficulty ;
-            ex:creditHour ?credit ;
-            ex:description ?desc .
-    ?skill rdfs:label ?skillLabel .
-    MINUS { ?student ex:hasSkill ?skill . }
-}
-ORDER BY ?difficulty ?courseLabel

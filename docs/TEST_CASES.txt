@@ -1,78 +1,33 @@
-Evaluation Test Cases - Category 2 Version
-==========================================
+Test Cases - Solution 1 Course Recommendation
+============================================
 
-Test Case 1: AI career recommendation
--------------------------------------
-Input:
-- Interest Area: Artificial Intelligence
-- Target Career: AI Engineer
-- Current Skills: Python Programming
-
+TC-S1-01: Verify RDF/RDFS data loading
+Steps:
+1. Run python run_tests.py.
+2. Check whether the RDF/RDFS schema and data are loaded.
 Expected Result:
-- Target Career should display AI Engineer.
-- Matched skill should include Python Programming.
-- Missing skills should include Algorithms, Deep Learning and Machine Learning.
-- Recommended courses should include Algorithm Design, Deep Learning and Machine Learning.
+The system loads RDFS classes, RDF properties, interests, skills and courses successfully.
 
-Actual Result:
-To be filled during system testing.
-
-Status:
-Pass / Fail
-
-
-Test Case 2: Data Science course recommendation
------------------------------------------------
+TC-S1-02: Verify AI course recommendation
 Input:
-- Interest Area: Data Science
-- Target Career: Data Scientist
-- Current Skills: Python Programming, Statistics
-
+Interest Area: Artificial Intelligence
 Expected Result:
-- Matched skills should include Python Programming and Statistics.
-- Missing skills should include Database Management, Data Visualization and Machine Learning.
-- Recommended courses should include Database Systems, Data Visualization and Machine Learning.
+The system recommends AI-related courses such as Introduction to Python Programming, Machine Learning, Deep Learning, Algorithm Design and Statistics for Data Analytics.
 
-Actual Result:
-To be filled during system testing.
-
-Status:
-Pass / Fail
-
-
-Test Case 3: Cybersecurity skill gap analysis
---------------------------------------------
+TC-S1-03: Verify Data Science course recommendation
 Input:
-- Interest Area: Cybersecurity
-- Target Career: Cybersecurity Analyst
-- Current Skills: Computer Networking
-
+Interest Area: Data Science
 Expected Result:
-- Matched skill should include Computer Networking.
-- Missing skills should include Python Programming, Security Fundamentals and Critical Thinking.
-- Recommended courses should include Introduction to Python Programming, Cybersecurity Basics and Critical Thinking and Problem Solving.
+The system recommends relevant courses such as Introduction to Python Programming, Database Systems, Statistics for Data Analytics, Machine Learning, Data Visualization and Critical Thinking and Problem Solving.
 
-Actual Result:
-To be filled during system testing.
-
-Status:
-Pass / Fail
-
-
-Test Case 4: No missing skill condition
---------------------------------------
+TC-S1-04: Verify Cybersecurity course recommendation
 Input:
-- Interest Area: Web Development
-- Target Career: Web Developer
-- Current Skills: HTML and CSS, JavaScript, Backend Programming, Database Management
-
+Interest Area: Cybersecurity
 Expected Result:
-- Career readiness should be 100%.
-- No missing skills should be shown.
-- No course recommendation should be needed.
+The system recommends cybersecurity-related courses such as Computer Networking, Cybersecurity Fundamentals and Critical Thinking and Problem Solving.
 
-Actual Result:
-To be filled during system testing.
-
-Status:
-Pass / Fail
+TC-S1-05: Verify Web Development course recommendation
+Input:
+Interest Area: Web Development
+Expected Result:
+The system recommends web-related courses such as Database Systems, Web Design, JavaScript Development and Backend Web Programming.

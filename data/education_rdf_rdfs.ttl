@@ -4,13 +4,18 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 #################################################################
-# RDF/RDFS Schema: Semantic Course and Career Recommendation System
-# Category 2 only: RDF, RDFS and SPARQL
+# Solution 1: Semantic Course Recommendation System
+# Selected SWT focus: Category 2 only - RDF, RDFS and SPARQL
+# Removed: Career Path / Skill Gap Analysis
+#################################################################
+
+#################################################################
+# RDFS Classes
 #################################################################
 
 ex:Student a rdfs:Class ;
     rdfs:label "Student" ;
-    rdfs:comment "A learner who has skills and interests." .
+    rdfs:comment "A learner who selects a learning interest area." .
 
 ex:Course a rdfs:Class ;
     rdfs:label "Course" ;
@@ -18,131 +23,142 @@ ex:Course a rdfs:Class ;
 
 ex:Skill a rdfs:Class ;
     rdfs:label "Skill" ;
-    rdfs:comment "A skill or competency that can be owned by students, taught by courses, and required by careers." .
-
-ex:Career a rdfs:Class ;
-    rdfs:label "Career" ;
-    rdfs:comment "A career path that requires certain skills." .
+    rdfs:comment "A competency that can be taught by courses." .
 
 ex:Interest a rdfs:Class ;
     rdfs:label "Interest" ;
-    rdfs:comment "An academic or professional interest area." .
+    rdfs:comment "A student's learning interest area." .
 
 #################################################################
 # RDF Properties with RDFS domain and range
 #################################################################
 
-ex:hasSkill a rdf:Property ;
-    rdfs:domain ex:Student ;
-    rdfs:range ex:Skill ;
-    rdfs:label "has skill" .
-
 ex:interestedIn a rdf:Property ;
+    rdfs:label "interested in" ;
     rdfs:domain ex:Student ;
-    rdfs:range ex:Interest ;
-    rdfs:label "interested in" .
-
-ex:requiresSkill a rdf:Property ;
-    rdfs:domain ex:Career ;
-    rdfs:range ex:Skill ;
-    rdfs:label "requires skill" .
+    rdfs:range ex:Interest .
 
 ex:teachesSkill a rdf:Property ;
+    rdfs:label "teaches skill" ;
     rdfs:domain ex:Course ;
-    rdfs:range ex:Skill ;
-    rdfs:label "teaches skill" .
+    rdfs:range ex:Skill .
 
 ex:relatedToInterest a rdf:Property ;
-    rdfs:domain ex:Career ;
-    rdfs:range ex:Interest ;
-    rdfs:label "related to interest" .
+    rdfs:label "related to interest" ;
+    rdfs:domain ex:Course ;
+    rdfs:range ex:Interest .
 
 ex:hasPrerequisiteSkill a rdf:Property ;
+    rdfs:label "has prerequisite skill" ;
     rdfs:domain ex:Course ;
-    rdfs:range ex:Skill ;
-    rdfs:label "has prerequisite skill" .
-
-ex:difficulty a rdf:Property ;
-    rdfs:domain ex:Course ;
-    rdfs:range xsd:string ;
-    rdfs:label "difficulty" .
-
-ex:creditHour a rdf:Property ;
-    rdfs:domain ex:Course ;
-    rdfs:range xsd:integer ;
-    rdfs:label "credit hour" .
+    rdfs:range ex:Skill .
 
 ex:description a rdf:Property ;
-    rdfs:range xsd:string ;
     rdfs:label "description" .
+
+ex:skillCategory a rdf:Property ;
+    rdfs:label "skill category" ;
+    rdfs:domain ex:Skill .
+
+ex:difficulty a rdf:Property ;
+    rdfs:label "difficulty" ;
+    rdfs:domain ex:Course .
+
+ex:creditHour a rdf:Property ;
+    rdfs:label "credit hour" ;
+    rdfs:domain ex:Course .
 
 #################################################################
 # Interests
 #################################################################
 
 ex:ArtificialIntelligence a ex:Interest ;
-    rdfs:label "Artificial Intelligence" .
+    rdfs:label "Artificial Intelligence" ;
+    ex:description "Interest in intelligent systems, automation and machine learning." .
 
 ex:DataScience a ex:Interest ;
-    rdfs:label "Data Science" .
+    rdfs:label "Data Science" ;
+    ex:description "Interest in data analysis, statistics and data-driven decision making." .
+
+ex:SoftwareDevelopment a ex:Interest ;
+    rdfs:label "Software Development" ;
+    ex:description "Interest in designing and building software systems." .
 
 ex:Cybersecurity a ex:Interest ;
-    rdfs:label "Cybersecurity" .
+    rdfs:label "Cybersecurity" ;
+    ex:description "Interest in protecting systems, networks and data." .
 
-ex:WebDevelopment a ex:Interest ;
-    rdfs:label "Web Development" .
+ex:WebDevelopmentInterest a ex:Interest ;
+    rdfs:label "Web Development" ;
+    ex:description "Interest in creating websites and web applications." .
 
 #################################################################
 # Skills
 #################################################################
 
-ex:Python a ex:Skill ; rdfs:label "Python Programming" .
-ex:Statistics a ex:Skill ; rdfs:label "Statistics" .
-ex:MachineLearning a ex:Skill ; rdfs:label "Machine Learning" .
-ex:DataVisualization a ex:Skill ; rdfs:label "Data Visualization" .
-ex:DeepLearning a ex:Skill ; rdfs:label "Deep Learning" .
-ex:Database a ex:Skill ; rdfs:label "Database Management" .
-ex:Networking a ex:Skill ; rdfs:label "Computer Networking" .
-ex:SecurityFundamentals a ex:Skill ; rdfs:label "Security Fundamentals" .
-ex:HTMLCSS a ex:Skill ; rdfs:label "HTML and CSS" .
-ex:JavaScript a ex:Skill ; rdfs:label "JavaScript" .
-ex:BackendProgramming a ex:Skill ; rdfs:label "Backend Programming" .
-ex:Algorithms a ex:Skill ; rdfs:label "Algorithms" .
-ex:CriticalThinking a ex:Skill ; rdfs:label "Critical Thinking" .
+ex:Python a ex:Skill ;
+    rdfs:label "Python Programming" ;
+    ex:skillCategory "Programming" .
 
-#################################################################
-# Careers
-#################################################################
+ex:SQL a ex:Skill ;
+    rdfs:label "SQL" ;
+    ex:skillCategory "Database" .
 
-ex:DataAnalyst a ex:Career ;
-    rdfs:label "Data Analyst" ;
-    ex:description "Uses data analysis and visualization to support decision-making." ;
-    ex:relatedToInterest ex:DataScience ;
-    ex:requiresSkill ex:Python, ex:Statistics, ex:DataVisualization, ex:Database .
+ex:Statistics a ex:Skill ;
+    rdfs:label "Statistics" ;
+    ex:skillCategory "Data Analysis" .
 
-ex:DataScientist a ex:Career ;
-    rdfs:label "Data Scientist" ;
-    ex:description "Builds analytical and machine learning models from data." ;
-    ex:relatedToInterest ex:DataScience, ex:ArtificialIntelligence ;
-    ex:requiresSkill ex:Python, ex:Statistics, ex:MachineLearning, ex:DataVisualization, ex:Database .
+ex:MachineLearning a ex:Skill ;
+    rdfs:label "Machine Learning" ;
+    ex:skillCategory "Artificial Intelligence" .
 
-ex:AIEngineer a ex:Career ;
-    rdfs:label "AI Engineer" ;
-    ex:description "Develops artificial intelligence models and intelligent applications." ;
-    ex:relatedToInterest ex:ArtificialIntelligence ;
-    ex:requiresSkill ex:Python, ex:MachineLearning, ex:DeepLearning, ex:Algorithms .
+ex:DeepLearning a ex:Skill ;
+    rdfs:label "Deep Learning" ;
+    ex:skillCategory "Artificial Intelligence" .
 
-ex:CybersecurityAnalyst a ex:Career ;
-    rdfs:label "Cybersecurity Analyst" ;
-    ex:description "Protects systems and investigates security threats." ;
-    ex:relatedToInterest ex:Cybersecurity ;
-    ex:requiresSkill ex:Networking, ex:SecurityFundamentals, ex:Python, ex:CriticalThinking .
+ex:Algorithms a ex:Skill ;
+    rdfs:label "Algorithms" ;
+    ex:skillCategory "Programming" .
 
-ex:WebDeveloper a ex:Career ;
-    rdfs:label "Web Developer" ;
-    ex:description "Builds and maintains websites and web applications." ;
-    ex:relatedToInterest ex:WebDevelopment ;
-    ex:requiresSkill ex:HTMLCSS, ex:JavaScript, ex:BackendProgramming, ex:Database .
+ex:DataVisualization a ex:Skill ;
+    rdfs:label "Data Visualization" ;
+    ex:skillCategory "Data Analysis" .
+
+ex:Database a ex:Skill ;
+    rdfs:label "Database Management" ;
+    ex:skillCategory "Database" .
+
+ex:Networking a ex:Skill ;
+    rdfs:label "Computer Networking" ;
+    ex:skillCategory "Networking" .
+
+ex:SecurityFundamentals a ex:Skill ;
+    rdfs:label "Security Fundamentals" ;
+    ex:skillCategory "Cybersecurity" .
+
+ex:CriticalThinking a ex:Skill ;
+    rdfs:label "Critical Thinking" ;
+    ex:skillCategory "Essential Skill" .
+
+ex:ProblemSolving a ex:Skill ;
+    rdfs:label "Problem Solving" ;
+    ex:skillCategory "Essential Skill" .
+
+ex:HTMLCSS a ex:Skill ;
+    rdfs:label "HTML and CSS" ;
+    ex:skillCategory "Web Development" .
+
+ex:JavaScript a ex:Skill ;
+    rdfs:label "JavaScript" ;
+    ex:skillCategory "Web Development" .
+
+ex:BackendProgramming a ex:Skill ;
+    rdfs:label "Backend Programming" ;
+    ex:skillCategory "Web Development" .
+
+ex:WebDevelopmentSkill a ex:Skill ;
+    rdfs:label "Web Development" ;
+    ex:skillCategory "Web Development" .
 
 #################################################################
 # Courses
@@ -150,67 +166,75 @@ ex:WebDeveloper a ex:Career ;
 
 ex:IntroPython a ex:Course ;
     rdfs:label "Introduction to Python Programming" ;
-    ex:description "Covers Python syntax, variables, loops, functions and basic problem solving." ;
+    ex:description "Introduces Python syntax, programming logic and basic problem solving." ;
+    ex:relatedToInterest ex:ArtificialIntelligence, ex:DataScience, ex:SoftwareDevelopment ;
     ex:teachesSkill ex:Python ;
     ex:difficulty "Beginner" ;
     ex:creditHour 3 .
 
-ex:AppliedStatistics a ex:Course ;
-    rdfs:label "Applied Statistics" ;
-    ex:description "Introduces statistical concepts used in data analysis and research." ;
-    ex:teachesSkill ex:Statistics ;
+ex:DatabaseSystems a ex:Course ;
+    rdfs:label "Database Systems" ;
+    ex:description "Covers database design, SQL queries and relational data management." ;
+    ex:relatedToInterest ex:DataScience, ex:SoftwareDevelopment, ex:WebDevelopmentInterest ;
+    ex:teachesSkill ex:SQL, ex:Database ;
     ex:difficulty "Beginner" ;
     ex:creditHour 3 .
 
-ex:DataVisualizationCourse a ex:Course ;
-    rdfs:label "Data Visualization" ;
-    ex:description "Teaches charting, dashboard design and visual communication of data." ;
-    ex:teachesSkill ex:DataVisualization ;
-    ex:hasPrerequisiteSkill ex:Python ;
-    ex:difficulty "Intermediate" ;
-    ex:creditHour 3 .
-
-ex:DatabaseSystems a ex:Course ;
-    rdfs:label "Database Systems" ;
-    ex:description "Covers database design, SQL, data modelling and information management." ;
-    ex:teachesSkill ex:Database ;
+ex:StatisticsAnalytics a ex:Course ;
+    rdfs:label "Statistics for Data Analytics" ;
+    ex:description "Covers probability, descriptive statistics and basic statistical analysis." ;
+    ex:relatedToInterest ex:DataScience, ex:ArtificialIntelligence ;
+    ex:teachesSkill ex:Statistics ;
     ex:difficulty "Beginner" ;
     ex:creditHour 3 .
 
 ex:MachineLearningCourse a ex:Course ;
     rdfs:label "Machine Learning" ;
-    ex:description "Introduces supervised and unsupervised learning algorithms." ;
+    ex:description "Introduces supervised learning, model evaluation and machine learning workflows." ;
+    ex:relatedToInterest ex:ArtificialIntelligence, ex:DataScience ;
     ex:teachesSkill ex:MachineLearning ;
     ex:hasPrerequisiteSkill ex:Python, ex:Statistics ;
     ex:difficulty "Intermediate" ;
-    ex:creditHour 3 .
+    ex:creditHour 4 .
 
 ex:DeepLearningCourse a ex:Course ;
     rdfs:label "Deep Learning" ;
-    ex:description "Covers neural networks and deep learning applications." ;
+    ex:description "Introduces neural networks and deep learning applications." ;
+    ex:relatedToInterest ex:ArtificialIntelligence ;
     ex:teachesSkill ex:DeepLearning ;
-    ex:hasPrerequisiteSkill ex:MachineLearning ;
+    ex:hasPrerequisiteSkill ex:Python, ex:MachineLearning ;
     ex:difficulty "Advanced" ;
-    ex:creditHour 3 .
+    ex:creditHour 4 .
 
 ex:AlgorithmDesign a ex:Course ;
     rdfs:label "Algorithm Design" ;
-    ex:description "Covers algorithmic thinking, complexity and problem-solving techniques." ;
-    ex:teachesSkill ex:Algorithms ;
-    ex:hasPrerequisiteSkill ex:Python ;
+    ex:description "Covers algorithmic thinking, data structures and computational problem solving." ;
+    ex:relatedToInterest ex:ArtificialIntelligence, ex:SoftwareDevelopment ;
+    ex:teachesSkill ex:Algorithms, ex:ProblemSolving ;
     ex:difficulty "Intermediate" ;
     ex:creditHour 3 .
 
-ex:NetworkFundamentals a ex:Course ;
-    rdfs:label "Network Fundamentals" ;
-    ex:description "Introduces computer networks, protocols and network troubleshooting." ;
+ex:DataVisualizationCourse a ex:Course ;
+    rdfs:label "Data Visualization" ;
+    ex:description "Teaches dashboards, charts and visual communication of data." ;
+    ex:relatedToInterest ex:DataScience ;
+    ex:teachesSkill ex:DataVisualization ;
+    ex:hasPrerequisiteSkill ex:Statistics ;
+    ex:difficulty "Intermediate" ;
+    ex:creditHour 3 .
+
+ex:NetworkingCourse a ex:Course ;
+    rdfs:label "Computer Networking" ;
+    ex:description "Explains network models, protocols and network communication." ;
+    ex:relatedToInterest ex:Cybersecurity ;
     ex:teachesSkill ex:Networking ;
     ex:difficulty "Beginner" ;
     ex:creditHour 3 .
 
 ex:CyberSecurityBasics a ex:Course ;
-    rdfs:label "Cybersecurity Basics" ;
-    ex:description "Covers cyber threats, security principles and basic protection methods." ;
+    rdfs:label "Cybersecurity Fundamentals" ;
+    ex:description "Covers basic cyber threats, protection concepts and security practices." ;
+    ex:relatedToInterest ex:Cybersecurity ;
     ex:teachesSkill ex:SecurityFundamentals ;
     ex:hasPrerequisiteSkill ex:Networking ;
     ex:difficulty "Intermediate" ;
@@ -218,21 +242,24 @@ ex:CyberSecurityBasics a ex:Course ;
 
 ex:CriticalThinkingCourse a ex:Course ;
     rdfs:label "Critical Thinking and Problem Solving" ;
-    ex:description "Develops logical reasoning and structured problem-solving skills." ;
-    ex:teachesSkill ex:CriticalThinking ;
+    ex:description "Improves reasoning, analysis and decision-making skills." ;
+    ex:relatedToInterest ex:Cybersecurity, ex:SoftwareDevelopment, ex:DataScience ;
+    ex:teachesSkill ex:CriticalThinking, ex:ProblemSolving ;
     ex:difficulty "Beginner" ;
     ex:creditHour 2 .
 
 ex:WebDesign a ex:Course ;
-    rdfs:label "Web Design with HTML and CSS" ;
-    ex:description "Teaches static website creation using HTML and CSS." ;
-    ex:teachesSkill ex:HTMLCSS ;
+    rdfs:label "Web Design" ;
+    ex:description "Introduces HTML, CSS and responsive website layout." ;
+    ex:relatedToInterest ex:WebDevelopmentInterest, ex:SoftwareDevelopment ;
+    ex:teachesSkill ex:HTMLCSS, ex:WebDevelopmentSkill ;
     ex:difficulty "Beginner" ;
     ex:creditHour 3 .
 
 ex:JavaScriptDevelopment a ex:Course ;
     rdfs:label "JavaScript Development" ;
-    ex:description "Covers interactive web programming using JavaScript." ;
+    ex:description "Teaches interactive web application development using JavaScript." ;
+    ex:relatedToInterest ex:WebDevelopmentInterest, ex:SoftwareDevelopment ;
     ex:teachesSkill ex:JavaScript ;
     ex:hasPrerequisiteSkill ex:HTMLCSS ;
     ex:difficulty "Intermediate" ;
@@ -240,8 +267,9 @@ ex:JavaScriptDevelopment a ex:Course ;
 
 ex:BackendWebProgramming a ex:Course ;
     rdfs:label "Backend Web Programming" ;
-    ex:description "Covers server-side logic, APIs and database connection for web systems." ;
+    ex:description "Covers server-side programming, APIs and backend application logic." ;
+    ex:relatedToInterest ex:WebDevelopmentInterest, ex:SoftwareDevelopment ;
     ex:teachesSkill ex:BackendProgramming ;
-    ex:hasPrerequisiteSkill ex:JavaScript, ex:Database ;
+    ex:hasPrerequisiteSkill ex:Python, ex:Database ;
     ex:difficulty "Intermediate" ;
     ex:creditHour 3 .

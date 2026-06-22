@@ -3,18 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RDF/RDFS Course and Career Recommendation System</title>
+    <title>Solution 1 - Course Recommendation RDF/RDFS/SPARQL</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header>
-        <h1>Semantic Course and Career Recommendation System</h1>
-        <p>Category 2 only: RDF, RDFS and SPARQL for education course and career planning.</p>
+        <div class="header-inner">
+            <p class="tag">TSW6223 Semantic Web Technology</p>
+            <h1>Semantic Course Recommendation System</h1>
+            <p>Solution 1 website for education-domain course recommendation.</p>
+            <p class="category">Category 2 only: RDF, RDFS and SPARQL</p>
+        </div>
     </header>
 
     <main>
+        <section class="card intro-card">
+            <h2>System Purpose</h2>
+            <p>
+                This website helps students find suitable courses based on their selected learning interest area.
+                The <strong>Current Skills</strong> checkbox section and <strong>Career Path / Skill Gap Analysis</strong> section have been removed,
+                so this version focuses only on <strong>Course Recommendation</strong>.
+            </p>
+            <div class="flow">
+                <span>Student Interest</span>
+                <span>RDF/RDFS Data</span>
+                <span>SPARQL Query</span>
+                <span>Recommended Courses</span>
+            </div>
+        </section>
+
         <section class="card">
-            <h2>Student Profile</h2>
+            <h2>Student Profile Input</h2>
+            <p class="small-note">
+                Select an interest area only. The system stores the selected interest as an RDF triple and uses SPARQL
+                to recommend courses related to that interest.
+            </p>
+
             <form method="POST">
                 <label for="interest">Select Interest Area</label>
                 <select name="interest" id="interest" required>
@@ -26,67 +50,17 @@
                     {% endfor %}
                 </select>
 
-                <label for="career">Target Career Path</label>
-                <select name="career" id="career">
-                    <option value="">-- Auto suggest based on interest --</option>
-                    {% for career in careers %}
-                        <option value="{{ career.uri }}" {% if selected.career == career.uri %}selected{% endif %}>
-                            {{ career.label }}
-                        </option>
-                    {% endfor %}
-                </select>
-
-                <label>Current Skills</label>
-                <div class="checkbox-grid">
-                    {% for skill in skills %}
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="skills" value="{{ skill.uri }}" {% if skill.uri in selected.skills %}checked{% endif %}>
-                            {{ skill.label }}
-                        </label>
-                    {% endfor %}
-                </div>
-
-                <button type="submit">Generate Recommendation</button>
+                <button type="submit">Recommend Courses</button>
             </form>
         </section>
 
         {% if result %}
         <section class="card result">
-            <h2>Recommendation Result</h2>
+            <h2>Course Recommendation Result</h2>
 
-            {% if result.target_career %}
-            <div class="summary-box">
-                <h3>Target Career: {{ result.target_career }}</h3>
-                <p>{{ result.target_description }}</p>
-                <p><strong>Career Readiness:</strong> {{ result.progress }}%</p>
-            </div>
-
-            <div class="two-column">
-                <div>
-                    <h3>Matched Skills</h3>
-                    {% if result.matched_skills %}
-                        <ul>
-                            {% for skill in result.matched_skills %}
-                                <li>{{ skill }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>No matched skills yet.</p>
-                    {% endif %}
-                </div>
-
-                <div>
-                    <h3>Missing Skills</h3>
-                    {% if result.missing_skills %}
-                        <ul>
-                            {% for skill in result.missing_skills %}
-                                <li>{{ skill }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>No missing skills. You are ready for this career path.</p>
-                    {% endif %}
-                </div>
+            <div class="summary-box highlight">
+                <h3>Selected Interest: {{ result.interest_label }}</h3>
+                <p>{{ result.interest_description }}</p>
             </div>
 
             <h3>Recommended Courses</h3>
@@ -95,10 +69,11 @@
                     <thead>
                         <tr>
                             <th>Course</th>
-                            <th>Skill Covered</th>
+                            <th>Skill(s) Taught</th>
                             <th>Difficulty</th>
-                            <th>Credit</th>
-                            <th>Prerequisite</th>
+                            <th>Credit Hour</th>
+                            <th>Prerequisite Skill(s)</th>
+                            <th>Reason</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -108,44 +83,78 @@
                                 <strong>{{ course.course }}</strong><br>
                                 <span>{{ course.description }}</span>
                             </td>
-                            <td>{{ course.skill }}</td>
+                            <td>{{ course.skills | join(', ') }}</td>
                             <td>{{ course.difficulty }}</td>
                             <td>{{ course.credit }}</td>
                             <td>{{ course.prerequisites | join(', ') }}</td>
+                            <td>{{ course.reason }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             {% else %}
-                <p>No course recommendation is needed because there are no missing skills for the selected career.</p>
-            {% endif %}
-            {% else %}
-                <p>No target career was found. Please select an interest area or choose a target career.</p>
+                <p>No course was found for the selected interest area.</p>
             {% endif %}
 
-            <h3>Possible Careers Based on Interest</h3>
-            {% if result.possible_careers %}
-                <ul>
-                    {% for career in result.possible_careers %}
-                        <li><strong>{{ career.career }}</strong> — {{ career.description }}</li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>No possible career found for the selected interest.</p>
-            {% endif %}
-
-            <div class="tech-box">
+            <div class="tech-box lower-gap">
                 <p><strong>Semantic Web Technology Used:</strong> {{ result.technology_note }}</p>
                 <details>
                     <summary>Show sample SPARQL queries used by the system</summary>
-                    <h4>Career matching query</h4>
-                    <pre>{{ result.sparql_examples.career_query }}</pre>
                     <h4>Course recommendation query</h4>
-                    <pre>{{ result.sparql_examples.course_query }}</pre>
+                    <pre>{{ result.sparql_examples.recommendation_query }}</pre>
                 </details>
             </div>
         </section>
         {% endif %}
+
+        <section class="card">
+            <h2>RDF/RDFS Model Preview</h2>
+            <p class="small-note">
+                This section is generated from the Turtle data file. It supports the demonstration by showing the RDFS classes,
+                RDF properties, domains and ranges used in Solution 1.
+            </p>
+
+            <details>
+                <summary>Show RDFS classes and RDF properties</summary>
+                <h3>RDFS Classes</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Class</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in schema_summary.classes %}
+                        <tr>
+                            <td>{{ item.label }}</td>
+                            <td>{{ item.comment }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <h3>RDF Properties with RDFS Domain and Range</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Domain</th>
+                            <th>Range</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in schema_summary.properties %}
+                        <tr>
+                            <td>{{ item.label }}</td>
+                            <td>{{ item.domain }}</td>
+                            <td>{{ item.range }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </details>
+        </section>
     </main>
 </body>
 </html>

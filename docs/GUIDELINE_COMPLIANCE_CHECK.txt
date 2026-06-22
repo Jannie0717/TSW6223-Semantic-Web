@@ -1,0 +1,29 @@
+Guideline Compliance Check - Solution 1
+======================================
+
+Project focus:
+- Domain: Education
+- Subdomain: Course Recommendation
+- Selected technology: Category 2 - RDF, RDFS and SPARQL
+- Programming language/framework: Python Flask
+
+How the application follows the guideline:
+1. Research and Analysis
+   - The system applies RDF, RDFS and SPARQL concepts to an education-domain course recommendation problem.
+   - RDF/RDFS is used to structure course, skill and interest data in a machine-readable way.
+
+2. Application Development
+   - The project includes a working Python Flask website.
+   - The user selects one interest area only.
+   - The system queries the RDF/RDFS knowledge base using SPARQL and returns relevant courses.
+
+3. Evaluation
+   - run_tests.py provides functionality tests for graph loading, schema preview and course recommendation.
+
+4. Documentation
+   - Report-ready explanation files are included in the docs folder.
+   - SPARQL examples and test cases are included for report and presentation support.
+
+Removed features:
+- Current Skills selection has been removed from the user interface.
+- Career Path / Skill Gap Analysis has been removed from Solution 1.
