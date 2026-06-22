@@ -1,4 +1,4 @@
-# TSW6223-Semantic-Web
+# TSW6223-Semantic-Web Solution 1
 
 Semantic Course and Career Recommendation System - Category 2 Version
 
