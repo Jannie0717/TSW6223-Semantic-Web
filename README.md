@@ -1,7 +1,5 @@
 # TSW6223-Semantic-Web
-====================================================================
-Semantic Course and Career Recommendation System - Category 2 Version
-====================================================================
+## Semantic Course and Career Recommendation System - Category 2 Version
 
 Project Domain:
 Education
@@ -40,6 +38,7 @@ Main Features
 
 Project Structure
 -----------------
+```
 solution1_course_recommendation_interest_only/
 |
 ├── app.py
@@ -63,21 +62,40 @@ solution1_course_recommendation_interest_only/
     ├── REPORT_SECTION_4_EVALUATION.txt
     ├── SPARQL_EXAMPLES.txt
     └── TEST_CASES.txt
-
-How to Run on Windows CMD
+```
+How to Run on Windows CMD Manually
 -------------------------
-1. Open CMD in this project folder.
-2. Run:
-
-   python -m venv venv
-   venv\Scripts\activate.bat
-   pip install -r requirements.txt
-   python app.py
-
-3. Keep CMD open.
-4. Open browser and go to:
-
-   http://127.0.0.1:5000
+1. Open **Command Prompt** in this project folder.
+2. Download python version 3.11.0
+```
+curl -o python-3.11.0.exe https://www.python.org/ftp/python/3.11.0/python-3.11.0-amd64.exe
+```
+3. Install python version 3.11.0
+```
+./python-3.11.0.exe /quiet InstallAllUsers=1 PrependPath=1 Include_test=0
+```
+4. Create virtual environment:
+```
+python -m venv venv
+```
+5. Activate virtual environment (Windows)
+```
+venv\Scripts\activate.bat
+```
+6. Install requirements dependencies
+```
+pip install -r requirements.txt
+```
+7. Run app.py
+```
+python app.py
+```
+8. Open browser and go to:
+```
+http://127.0.0.1:5000
+```
+> [!NOTE]
+> **Keep Command Prompt open.**
 
 Alternative: Double-click run_windows_cmd.bat
 --------------------------------------------
@@ -97,8 +115,9 @@ If PowerShell blocks venv activation with "running scripts is disabled", use CMD
 How to Run Functionality Tests
 ------------------------------
 After installing requirements, run:
-
-   python run_tests.py
+```
+python run_tests.py
+```
 
 Expected result:
 
@@ -123,9 +142,18 @@ it is usually caused by an incompatible rdflib / pyparsing package combination i
    FIX_DEPENDENCIES_WINDOWS.bat
 
 Or run these commands in CMD inside the project folder:
-
-   venv\Scripts\activate.bat
-   python -m pip uninstall -y rdflib pyparsing
-   python -m pip install --no-cache-dir -r requirements.txt
-   python run_tests.py
-   python app.py
+```
+venv\Scripts\activate.bat
+```
+```
+python -m pip uninstall -y rdflib pyparsing
+```
+```
+python -m pip install --no-cache-dir -r requirements.txt
+```
+```
+python run_tests.py
+```
+```
+python app.py
+```
